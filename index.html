@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>The Little Screens - Pro Luxury Experience</title>
     
     <!-- Fonts -->
@@ -49,6 +49,9 @@
                             '0%': { transform: 'translateY(20px)', opacity: '0' },
                             '100%': { transform: 'translateY(0)', opacity: '1' },
                         }
+                    },
+                    padding: {
+                        'safe-bottom': 'env(safe-area-inset-bottom)',
                     }
                 }
             }
@@ -60,7 +63,7 @@
         :root {
             --bg-primary: #050505;
             --bg-secondary: #111111;
-            --bg-glass: rgba(18, 18, 18, 0.8);
+            --bg-glass: rgba(18, 18, 18, 0.85);
             --text-primary: #FFFFFF;
             --text-secondary: #9CA3AF;
             --border-color: rgba(255, 255, 255, 0.1);
@@ -71,7 +74,7 @@
         [data-theme="light"] {
             --bg-primary: #FAFAFA;
             --bg-secondary: #FFFFFF;
-            --bg-glass: rgba(255, 255, 255, 0.8);
+            --bg-glass: rgba(255, 255, 255, 0.85);
             --text-primary: #1A1A1A;
             --text-secondary: #6B7280;
             --border-color: rgba(0, 0, 0, 0.08);
@@ -83,6 +86,7 @@
             background-color: var(--bg-primary);
             color: var(--text-primary);
             transition: background-color 0.5s ease, color 0.5s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .glass-panel {
@@ -126,14 +130,35 @@
         [data-theme="light"] .pro-button-secondary {
             color: #4B5563;
         }
+        
+        /* Mobile Specific Tweaks */
+        .safe-pb {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+        
+        /* Form Inputs */
+        .pro-input {
+            width: 100%;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 1rem;
+            border-radius: 0.75rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+        .pro-input:focus {
+            border-color: #CBA579;
+            box-shadow: 0 0 0 2px rgba(203, 165, 121, 0.1);
+        }
     </style>
 </head>
 <body class="antialiased selection:bg-gold selection:text-black overflow-x-hidden">
 
     <!-- Loading Screen -->
-    <div id="loading-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-obsidian transition-opacity duration-700">
+    <div id="loading-screen" class="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-obsidian transition-opacity duration-700">
         <i data-lucide="gem" class="text-gold w-12 h-12 mb-6 animate-pulse"></i>
-        <div class="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-500 animate-pulse">Loading Experience</div>
+        <div class="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-500 animate-pulse">The Little Screens</div>
     </div>
 
     <!-- Main Container -->
@@ -143,58 +168,58 @@
         <div class="fixed top-0 left-0 right-0 max-w-md mx-auto z-40 p-6 flex justify-between items-start pointer-events-none">
             <div class="pointer-events-auto">
                 <!-- Dynamic Back Button (Only visible on sub-pages) -->
-                <button id="header-back-btn" class="hidden w-10 h-10 rounded-full glass-panel flex items-center justify-center text-[var(--text-primary)] hover:scale-105 transition-transform" onclick="navigateTo('home')">
+                <button id="header-back-btn" class="hidden w-10 h-10 rounded-full glass-panel flex items-center justify-center text-[var(--text-primary)] hover:scale-105 transition-transform active:scale-95" onclick="navigateTo('home')">
                     <i data-lucide="chevron-left" class="w-5 h-5"></i>
                 </button>
             </div>
             
-            <button id="theme-toggle" class="pointer-events-auto w-10 h-10 rounded-full glass-panel flex items-center justify-center text-[var(--text-primary)] hover:rotate-180 transition-transform duration-700">
+            <button id="theme-toggle" class="pointer-events-auto w-10 h-10 rounded-full glass-panel flex items-center justify-center text-[var(--text-primary)] hover:rotate-180 transition-transform duration-700 active:scale-95">
                 <i data-lucide="sun" class="w-5 h-5 hidden" id="icon-sun"></i>
                 <i data-lucide="moon" class="w-5 h-5" id="icon-moon"></i>
             </button>
         </div>
 
         <!-- Scrollable Content Area -->
-        <main id="app-content" class="pb-32 min-h-screen transition-all duration-500">
+        <main id="app-content" class="pb-40 min-h-screen transition-all duration-500">
             <!-- Content Injected via JS -->
         </main>
 
         <!-- Floating Action Button (WhatsApp) -->
-        <div id="fab-whatsapp" class="fixed bottom-32 right-6 z-40 transition-transform duration-300 hover:scale-110 active:scale-95 hidden">
-            <a href="https://wa.me/919916519128" target="_blank" class="block bg-[#25D366] text-white p-4 rounded-full shadow-lg shadow-green-500/30 border border-white/10 relative group">
+        <div id="fab-whatsapp" class="fixed bottom-28 right-6 z-40 transition-transform duration-300 hover:scale-110 active:scale-95 hidden">
+            <a href="https://wa.me/919916519128?text=Hi%2C%20I%20have%20a%20query%20about%20The%20Little%20Screens%20experiences." target="_blank" class="block bg-[#25D366] text-white p-4 rounded-full shadow-lg shadow-green-500/30 border border-white/10 relative group">
                 <div class="absolute inset-0 bg-white rounded-full animate-ping opacity-20"></div>
                 <i data-lucide="message-circle" class="w-6 h-6 relative z-10 fill-white"></i>
             </a>
         </div>
 
         <!-- Floating Navigation Dock -->
-        <div class="fixed bottom-8 left-0 right-0 z-50 flex justify-center pointer-events-none">
-            <nav class="pointer-events-auto glass-panel rounded-full px-6 py-4 flex items-center gap-8 shadow-2xl scale-90 sm:scale-100 transition-all">
-                <button class="nav-item group relative" onclick="navigateTo('home')" data-tab="home">
+        <div class="fixed bottom-0 left-0 right-0 z-50 flex justify-center pointer-events-none safe-pb pb-4">
+            <nav class="pointer-events-auto glass-panel rounded-full px-6 py-4 flex items-center gap-6 sm:gap-8 shadow-2xl scale-[0.85] sm:scale-100 transition-all origin-bottom">
+                <button class="nav-item group relative w-10 h-10 flex items-center justify-center" onclick="navigateTo('home')" data-tab="home">
                     <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
                     <i data-lucide="home" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
                     <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
                 </button>
                 
-                <button class="nav-item group relative" onclick="navigateTo('experiences')" data-tab="experiences">
+                <button class="nav-item group relative w-10 h-10 flex items-center justify-center" onclick="navigateTo('experiences')" data-tab="experiences">
                     <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
                     <i data-lucide="sparkles" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
                     <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
                 </button>
 
-                <button class="nav-item group relative" onclick="navigateTo('booking')" data-tab="booking">
+                <button class="nav-item group relative w-10 h-10 flex items-center justify-center" onclick="navigateTo('booking')" data-tab="booking">
                     <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
                     <i data-lucide="calendar" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
                     <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
                 </button>
 
-                <button class="nav-item group relative" onclick="navigateTo('referral')" data-tab="referral">
+                <button class="nav-item group relative w-10 h-10 flex items-center justify-center" onclick="navigateTo('referral')" data-tab="referral">
                     <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
                     <i data-lucide="gift" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
                     <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
                 </button>
 
-                <button class="nav-item group relative" onclick="navigateTo('vip')" data-tab="vip">
+                <button class="nav-item group relative w-10 h-10 flex items-center justify-center" onclick="navigateTo('vip')" data-tab="vip">
                     <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
                     <i data-lucide="user" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
                     <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
@@ -209,42 +234,43 @@
         // --- DATA ---
         const WA_NUMBER = "919916519128";
         
+        // --- UPDATED PACKAGE DATA WITH LOCAL IMAGES ---
         const PACKAGES = [
             {
                 id: 1,
-                title: "Cinematic Platinum",
-                price: "₹3,999",
+                title: "Couple Premium",
+                price: "₹1,799",
                 duration: "3 Hours",
-                image: "https://images.unsplash.com/photo-1517604931442-71053e6e2306?q=80&w=1200&auto=format&fit=crop",
-                description: "The classic private theatre experience with popcorn and beverages.",
-                features: ["Private 150-inch Screen", "Dolby Atmos Sound", "Unlimited Popcorn", "2 Mocktails"]
+                image: "1.png",
+                description: "An intimate private screening experience designed for two, including beautiful decorations to set the mood.",
+                features: ["2 People", "Decorations Included", "Private Screening", "Max 2 Guests"]
             },
             {
                 id: 2,
-                title: "Sapphire Birthday",
-                price: "₹6,499",
-                duration: "4 Hours",
-                image: "https://images.unsplash.com/photo-1530103862676-de3c9a59af38?q=80&w=1200&auto=format&fit=crop",
-                description: "Complete birthday setup with balloon decor, cake, and fog entry.",
-                features: ["Grand Balloon Decor", "500g Premium Cake", "Fog Entry Effect", "Photography (30 mins)"]
+                title: "Couple Luxury",
+                price: "₹1,999",
+                duration: "3 Hours",
+                image: "2.png",
+                description: "Elevate your date night with our Luxury Couple package. Includes premium decorations and a VIP cinematic feel.",
+                features: ["2 People", "Premium Decor", "VIP Experience", "Max 2 Guests"]
             },
             {
                 id: 3,
-                title: "Diamond Proposal",
-                price: "₹9,999",
-                duration: "4 Hours",
-                image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=1200&auto=format&fit=crop",
-                description: "A breathtaking 'Will You Marry Me' setup with roses and candlelight.",
-                features: ["Rose Petal Pathway", "Marry Me Neon Sign", "Candlelight Dinner", "Hidden Photographer"]
+                title: "Group Premium",
+                price: "₹1,899",
+                duration: "3 Hours",
+                image: "3.png",
+                description: "Perfect for friends and family. Covers up to 4 people with decorations. Additional guests at ₹200/person.",
+                features: ["Up to 4 People", "Decorations Included", "Max 10 Guests", "₹200/Extra Person"]
             },
             {
                 id: 4,
-                title: "The Royal Suite",
-                price: "₹14,999",
-                duration: "5 Hours",
-                image: "https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1200&auto=format&fit=crop",
-                description: "The ultimate luxury. Chauffeur pickup, 7-course meal, and exclusive gifts.",
-                features: ["Luxury Car Pickup", "7-Course Gourmet Meal", "Personal Butler", "Exclusive Gift Hamper"]
+                title: "Group Luxury",
+                price: "₹1,999",
+                duration: "3 Hours",
+                image: "4.png",
+                description: "The ultimate group celebration package. Luxury setting for up to 4 people, expandable for larger gatherings.",
+                features: ["Up to 4 People", "Luxury Decor", "Max 6 Guests", "₹200/Extra Person"]
             }
         ];
 
@@ -259,6 +285,7 @@
         let state = {
             currentTab: 'home',
             theme: 'dark', // 'dark' or 'light'
+            user: null, // Logged in user data
             booking: {
                 package: null,
                 step: 1,
@@ -266,7 +293,8 @@
                 time: '',
                 guests: 2,
                 addons: []
-            }
+            },
+            authMode: 'login' // 'login' or 'signup'
         };
 
         // --- INIT ---
@@ -274,6 +302,12 @@
             // Theme Init
             const savedTheme = localStorage.getItem('theme') || 'dark';
             setTheme(savedTheme);
+
+            // User Init (Local Storage)
+            const savedUser = localStorage.getItem('tls_user');
+            if(savedUser) {
+                state.user = JSON.parse(savedUser);
+            }
 
             // Fake Loading
             setTimeout(() => {
@@ -306,11 +340,11 @@
             if (mode === 'light') {
                 sunIcon.classList.remove('hidden');
                 moonIcon.classList.add('hidden');
-                loadingScreen.style.backgroundColor = '#FAFAFA'; // Marble
+                if(loadingScreen) loadingScreen.style.backgroundColor = '#FAFAFA'; // Marble
             } else {
                 sunIcon.classList.add('hidden');
                 moonIcon.classList.remove('hidden');
-                loadingScreen.style.backgroundColor = '#050505'; // Obsidian
+                if(loadingScreen) loadingScreen.style.backgroundColor = '#050505'; // Obsidian
             }
         }
 
@@ -327,7 +361,6 @@
                 state.booking.guests = 2;
                 state.booking.addons = [];
             } else if (screenId === 'booking' && !state.booking.package) {
-                // Default to first package if navigating directly without selection
                 state.booking.package = PACKAGES[0];
             }
 
@@ -348,7 +381,7 @@
 
             // Update FAB Visibility
             const fab = document.getElementById('fab-whatsapp');
-            if (screenId === 'booking') {
+            if (screenId === 'booking' || screenId === 'vip') {
                 fab.classList.add('hidden');
             } else {
                 fab.classList.remove('hidden');
@@ -361,7 +394,6 @@
         function updateDock() {
             document.querySelectorAll('.nav-item').forEach(el => {
                 const isTarget = el.dataset.tab === state.currentTab;
-                // Lucide replaces <i> with <svg> after first render. We try to find either.
                 const icon = el.querySelector('i') || el.querySelector('svg');
                 const glow = el.querySelector('.active-glow');
                 const dot = el.querySelector('.active-dot');
@@ -393,7 +425,14 @@
                 case 'experiences': html = getExperiencesHTML(); break;
                 case 'booking': html = getBookingHTML(); break;
                 case 'referral': html = getReferralHTML(); break;
-                case 'vip': html = getVIPHTML(); break;
+                case 'vip': 
+                    // Auth Check
+                    if(state.user) {
+                        html = getProfileHTML(); 
+                    } else {
+                        html = getAuthHTML();
+                    }
+                    break;
             }
 
             // Smooth transition
@@ -405,6 +444,7 @@
                 
                 // Re-bind listeners after rendering HTML
                 if (screenId === 'booking') bindBookingListeners();
+                if (screenId === 'vip' && state.user) bindProfileListeners();
             }, 200);
         }
 
@@ -413,9 +453,9 @@
         function getHomeHTML() {
             return `
                 <div class="animate-slide-up space-y-10">
-                    <!-- Hero -->
+                    <!-- Hero with 5.png -->
                     <div class="relative h-[460px] w-full rounded-b-[48px] overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1513106580091-1d82408b8cd8?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-1000 hover:scale-105">
+                        <img src="5.png" onerror="this.src='https://images.unsplash.com/photo-1513106580091-1d82408b8cd8?q=80&w=1200&auto=format&fit=crop'" class="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-1000 hover:scale-105">
                         <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/60 to-transparent"></div>
                         <div class="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
                         
@@ -431,10 +471,10 @@
                             </h1>
                             
                             <div class="flex gap-4 pt-2">
-                                <button onclick="navigateTo('experiences')" class="pro-button-primary px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transform transition hover:-translate-y-1">
-                                    Reserve Suite
+                                <button onclick="navigateTo('experiences')" class="pro-button-primary px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transform transition hover:-translate-y-1 active:scale-95">
+                                    Reserve Now
                                 </button>
-                                <button onclick="navigateTo('vip')" class="w-12 h-12 rounded-xl glass-panel flex items-center justify-center text-[var(--text-primary)] hover:bg-white/10 transition-colors">
+                                <button onclick="navigateTo('vip')" class="w-12 h-12 rounded-xl glass-panel flex items-center justify-center text-[var(--text-primary)] hover:bg-white/10 transition-colors active:scale-95">
                                     <i data-lucide="user" class="w-5 h-5"></i>
                                 </button>
                             </div>
@@ -443,13 +483,13 @@
 
                     <!-- Quick Actions -->
                     <div class="px-6 flex gap-4">
-                        <div onclick="navigateTo('booking')" class="flex-1 glass-panel p-6 flex flex-col items-center gap-3 cursor-pointer group rounded-3xl transition hover:border-gold/30">
+                        <div onclick="navigateTo('booking')" class="flex-1 glass-panel p-6 flex flex-col items-center gap-3 cursor-pointer group rounded-3xl transition hover:border-gold/30 active:scale-95 duration-200">
                             <div class="p-3 rounded-full bg-gradient-to-br from-[var(--bg-secondary)] to-black border border-[var(--border-color)] group-hover:border-gold/50 transition">
                                 <i data-lucide="calendar" class="w-5 h-5 text-gold"></i>
                             </div>
                             <span class="text-[var(--text-secondary)] text-xs font-bold uppercase tracking-wider group-hover:text-[var(--text-primary)]">Book Now</span>
                         </div>
-                        <div onclick="navigateTo('referral')" class="flex-1 glass-panel p-6 flex flex-col items-center gap-3 cursor-pointer group rounded-3xl transition hover:border-gold/30">
+                        <div onclick="navigateTo('referral')" class="flex-1 glass-panel p-6 flex flex-col items-center gap-3 cursor-pointer group rounded-3xl transition hover:border-gold/30 active:scale-95 duration-200">
                             <div class="p-3 rounded-full bg-gradient-to-br from-[var(--bg-secondary)] to-black border border-[var(--border-color)] group-hover:border-gold/50 transition">
                                 <i data-lucide="gift" class="w-5 h-5 text-gold"></i>
                             </div>
@@ -460,15 +500,15 @@
                     <!-- Carousel -->
                     <div class="pb-8">
                         <div class="flex justify-between items-end px-6 mb-6">
-                            <h2 class="text-2xl font-serif text-[var(--text-primary)]">Signature Suites</h2>
+                            <h2 class="text-2xl font-serif text-[var(--text-primary)]">Signature Packages</h2>
                             <button onclick="navigateTo('experiences')" class="text-gold text-xs font-bold tracking-widest uppercase">View All</button>
                         </div>
                         
                         <div class="flex overflow-x-auto gap-6 px-6 pb-4 snap-x hide-scrollbar">
                             ${PACKAGES.map(pkg => `
                                 <div class="min-w-[300px] snap-center">
-                                    <div class="relative h-[380px] rounded-[32px] overflow-hidden group cursor-pointer border border-[var(--border-color)]" onclick="selectPackageAndBook(${pkg.id})">
-                                        <img src="${pkg.image}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                    <div class="relative h-[380px] rounded-[32px] overflow-hidden group cursor-pointer border border-[var(--border-color)] active:scale-[0.98] transition-transform duration-300" onclick="selectPackageAndBook(${pkg.id})">
+                                        <img src="${pkg.image}" onerror="this.src='https://via.placeholder.com/300x380'" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                                         <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-[var(--bg-primary)]"></div>
                                         
                                         <div class="absolute top-4 right-4 glass-panel px-4 py-2 rounded-full">
@@ -480,7 +520,7 @@
                                             <div class="flex items-center gap-3 mb-4">
                                                 <span class="text-[var(--text-secondary)] text-xs uppercase tracking-wider">${pkg.duration}</span>
                                                 <span class="w-1 h-1 rounded-full bg-gold"></span>
-                                                <span class="text-[var(--text-secondary)] text-xs uppercase tracking-wider">4 Guests Max</span>
+                                                <span class="text-[var(--text-secondary)] text-xs uppercase tracking-wider">${pkg.features[0]}</span>
                                             </div>
                                         </div>
                                     </div>
@@ -502,9 +542,9 @@
 
                     <div class="space-y-6">
                         ${PACKAGES.map(pkg => `
-                            <div class="group relative bg-[var(--bg-secondary)] rounded-[32px] overflow-hidden border border-[var(--border-color)]">
+                            <div class="group relative bg-[var(--bg-secondary)] rounded-[32px] overflow-hidden border border-[var(--border-color)] shadow-lg">
                                 <div class="h-56 relative overflow-hidden">
-                                    <img src="${pkg.image}" class="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100">
+                                    <img src="${pkg.image}" onerror="this.src='https://via.placeholder.com/800x400'" class="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100">
                                     <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-secondary)] to-transparent"></div>
                                     <div class="absolute top-4 right-4 glass-panel px-3 py-1 rounded-full">
                                         <span class="text-gold font-bold text-xs">${pkg.price}</span>
@@ -513,8 +553,8 @@
                                 <div class="p-8 -mt-12 relative z-10">
                                     <h3 class="text-2xl font-serif text-[var(--text-primary)] mb-2">${pkg.title}</h3>
                                     <p class="text-[var(--text-secondary)] text-sm mb-6 leading-relaxed">${pkg.description}</p>
-                                    <button onclick="selectPackageAndBook(${pkg.id})" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider">
-                                        Reserve Suite
+                                    <button onclick="selectPackageAndBook(${pkg.id})" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider active:scale-95 transition-transform">
+                                        Reserve Now
                                     </button>
                                 </div>
                             </div>
@@ -524,13 +564,214 @@
             `;
         }
 
+        // --- AUTH & PROFILE HTML ---
+
+        function getAuthHTML() {
+            const isLogin = state.authMode === 'login';
+            return `
+                <div class="animate-fade-in pt-32 px-6 flex flex-col items-center justify-center min-h-[70vh]">
+                    <div class="w-full max-w-sm">
+                        <div class="text-center mb-10">
+                             <div class="w-20 h-20 mx-auto bg-gradient-to-br from-gold to-yellow-800 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(203,165,121,0.2)]">
+                                <i data-lucide="lock" class="w-8 h-8 text-black"></i>
+                            </div>
+                            <h2 class="text-3xl font-serif text-[var(--text-primary)] mb-2">${isLogin ? 'Welcome Back' : 'Join The Club'}</h2>
+                            <p class="text-[var(--text-secondary)] text-sm">Access your VIP profile and bookings.</p>
+                        </div>
+
+                        <form onsubmit="handleAuth(event)" class="space-y-4">
+                            ${!isLogin ? `
+                                <div class="space-y-2">
+                                    <label class="text-[var(--text-secondary)] text-xs uppercase tracking-widest font-bold ml-1">Full Name</label>
+                                    <input type="text" id="auth-name" class="pro-input" placeholder="Enter your name" required>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="space-y-2">
+                                <label class="text-[var(--text-secondary)] text-xs uppercase tracking-widest font-bold ml-1">Phone Number</label>
+                                <input type="tel" id="auth-phone" class="pro-input" placeholder="Enter phone number" required>
+                            </div>
+
+                            <div class="space-y-2">
+                                <label class="text-[var(--text-secondary)] text-xs uppercase tracking-widest font-bold ml-1">Password</label>
+                                <input type="password" id="auth-pass" class="pro-input" placeholder="••••••••" required>
+                            </div>
+
+                            <button type="submit" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider shadow-lg shadow-gold/20 mt-6 active:scale-95 transition-transform">
+                                ${isLogin ? 'Sign In' : 'Create Account'}
+                            </button>
+                        </form>
+
+                        <div class="mt-8 text-center">
+                            <button onclick="toggleAuthMode()" class="text-[var(--text-secondary)] text-sm hover:text-gold transition-colors">
+                                ${isLogin ? "Don't have an account? Sign Up" : "Already a member? Sign In"}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getProfileHTML() {
+            const user = state.user;
+            const defaultAvatar = "6.png";
+            
+            return `
+                <div class="animate-fade-in">
+                    <div class="relative h-[360px] w-full overflow-hidden rounded-b-[48px]">
+                        <img src="https://images.unsplash.com/photo-1551516594-56cb78394645?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-[var(--bg-primary)]/60 z-10"></div>
+                        
+                        <div class="absolute bottom-0 w-full p-8 z-20 flex flex-col items-center">
+                            <!-- Profile Photo Upload -->
+                            <div class="relative w-28 h-28 mb-4 group cursor-pointer" onclick="document.getElementById('avatar-upload').click()">
+                                <div class="absolute inset-0 bg-gold rounded-full blur opacity-20 group-hover:opacity-40 transition-opacity"></div>
+                                <div class="relative w-full h-full rounded-full p-[3px] bg-gradient-to-b from-gold to-transparent">
+                                    <div class="w-full h-full rounded-full border-4 border-[var(--bg-primary)] overflow-hidden bg-black">
+                                        <img id="profile-img" src="${user.avatar || defaultAvatar}" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                                <div class="absolute bottom-0 right-0 w-8 h-8 bg-gold rounded-full flex items-center justify-center text-black border-2 border-[var(--bg-primary)]">
+                                    <i data-lucide="camera" class="w-4 h-4"></i>
+                                </div>
+                                <input type="file" id="avatar-upload" class="hidden" accept="image/*" onchange="handleAvatarUpload(this)">
+                            </div>
+                            
+                            <h2 class="text-2xl font-serif text-white text-center">${user.name}</h2>
+                            <span class="text-gold text-[10px] font-bold tracking-[0.2em] uppercase mt-2">Platinum Member</span>
+                        </div>
+                    </div>
+
+                    <div class="px-6 mt-8 space-y-6">
+                        <div class="grid grid-cols-2 gap-4">
+                           <div class="glass-panel p-6 rounded-3xl text-center">
+                              <div class="text-2xl font-serif text-[var(--text-primary)]">0</div>
+                              <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">Credits</div>
+                           </div>
+                           <div class="glass-panel p-6 rounded-3xl text-center">
+                              <div class="text-2xl font-serif text-[var(--text-primary)]">0</div>
+                              <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">Visits</div>
+                           </div>
+                        </div>
+
+                        <div class="glass-panel p-6 rounded-3xl space-y-6">
+                            <h3 class="text-[var(--text-primary)] font-serif">Member Privileges</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[var(--text-primary)] text-sm">Priority Booking</span>
+                                    <i data-lucide="check" class="w-4 h-4 text-gold"></i>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[var(--text-primary)] text-sm">Valet Parking</span>
+                                    <i data-lucide="check" class="w-4 h-4 text-gold"></i>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[var(--text-secondary)] text-sm">Complimentary Cake</span>
+                                    <div class="w-4 h-4 rounded-full border border-[var(--text-secondary)]"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button onclick="logout()" class="w-full py-4 rounded-xl border border-red-500/30 text-red-500 text-xs font-bold uppercase tracking-wider hover:bg-red-500/10 transition-colors">
+                            Log Out
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- AUTH LOGIC ---
+
+        function toggleAuthMode() {
+            state.authMode = state.authMode === 'login' ? 'signup' : 'login';
+            renderContent('vip');
+        }
+
+        function handleAuth(e) {
+            e.preventDefault();
+            const phone = document.getElementById('auth-phone').value;
+            const pass = document.getElementById('auth-pass').value;
+
+            if (state.authMode === 'signup') {
+                const name = document.getElementById('auth-name').value;
+                if(!name || !phone || !pass) return;
+
+                // Create User
+                const newUser = {
+                    name: name,
+                    phone: phone,
+                    password: pass, // In a real app, hash this!
+                    avatar: null
+                };
+                
+                // Save to DB (Local Storage)
+                localStorage.setItem('tls_user_db_' + phone, JSON.stringify(newUser));
+                
+                // Auto Login
+                loginUser(newUser);
+            } else {
+                // Login
+                const storedUserStr = localStorage.getItem('tls_user_db_' + phone);
+                if (storedUserStr) {
+                    const storedUser = JSON.parse(storedUserStr);
+                    if (storedUser.password === pass) {
+                        loginUser(storedUser);
+                    } else {
+                        alert('Invalid password');
+                    }
+                } else {
+                    alert('User not found. Please sign up.');
+                }
+            }
+        }
+
+        function loginUser(user) {
+            state.user = user;
+            // Persist Session
+            localStorage.setItem('tls_user', JSON.stringify(user));
+            renderContent('vip');
+        }
+
+        function logout() {
+            state.user = null;
+            localStorage.removeItem('tls_user');
+            state.authMode = 'login';
+            renderContent('vip');
+        }
+
+        function handleAvatarUpload(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64Img = e.target.result;
+                    
+                    // Update State
+                    state.user.avatar = base64Img;
+                    
+                    // Update UI
+                    document.getElementById('profile-img').src = base64Img;
+                    
+                    // Save Persistence
+                    localStorage.setItem('tls_user', JSON.stringify(state.user));
+                    // Update "DB" record too
+                    localStorage.setItem('tls_user_db_' + state.user.phone, JSON.stringify(state.user));
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        function bindProfileListeners() {
+            lucide.createIcons();
+        }
+
+        // --- EXISTING BOOKING LOGIC (Unchanged) ---
+
         function getBookingHTML() {
             const pkg = state.booking.package;
             if(!pkg) return '';
 
             // Step 1: Date/Time
             if (state.booking.step === 1) {
-                // Generate next 7 days
                 const daysHTML = Array.from({length: 7}, (_, i) => {
                     const d = new Date();
                     d.setDate(d.getDate() + i);
@@ -541,7 +782,7 @@
                     
                     return `
                         <button onclick="setBookingDate('${fullDate}')" 
-                            class="min-w-[72px] h-[96px] rounded-[20px] flex flex-col items-center justify-center gap-1 border transition-all ${isSelected ? 'bg-gold border-gold text-black shadow-lg scale-105' : 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-secondary)]'}">
+                            class="min-w-[72px] h-[96px] rounded-[20px] flex flex-col items-center justify-center gap-1 border transition-all active:scale-95 ${isSelected ? 'bg-gold border-gold text-black shadow-lg scale-105' : 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-secondary)]'}">
                             <span class="text-[10px] font-bold uppercase tracking-wider opacity-60">${dayName}</span>
                             <span class="text-2xl font-serif font-medium">${dayNum}</span>
                         </button>
@@ -553,7 +794,7 @@
                     const isSelected = state.booking.time === t;
                     return `
                         <button onclick="setBookingTime('${t}')" 
-                            class="py-4 rounded-xl text-xs font-bold tracking-wider border transition-all ${isSelected ? 'bg-[var(--bg-secondary)] border-gold text-gold' : 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-secondary)]'}">
+                            class="py-4 rounded-xl text-xs font-bold tracking-wider border transition-all active:scale-95 ${isSelected ? 'bg-[var(--bg-secondary)] border-gold text-gold' : 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-secondary)]'}">
                             ${t}
                         </button>
                     `;
@@ -562,9 +803,9 @@
                 return `
                     <div class="animate-fade-in pt-24 px-6 space-y-8">
                         <div class="space-y-4">
-                            <h3 class="text-[var(--text-primary)] font-serif text-xl">Confirm Suite</h3>
+                            <h3 class="text-[var(--text-primary)] font-serif text-xl">Confirm Experience</h3>
                             <div class="p-4 rounded-2xl bg-[var(--bg-secondary)] border border-gold/50 shadow-[0_0_20px_var(--accent-glow)] flex gap-4 items-center">
-                                <img src="${pkg.image}" class="w-16 h-16 rounded-xl object-cover">
+                                <img src="${pkg.image}" onerror="this.src='https://via.placeholder.com/100'" class="w-16 h-16 rounded-xl object-cover">
                                 <div>
                                     <h4 class="text-[var(--text-primary)] font-serif">${pkg.title}</h4>
                                     <p class="text-gold text-xs font-bold mt-1">${pkg.price}</p>
@@ -591,27 +832,28 @@
                              <div class="flex justify-between items-center p-4 bg-[var(--bg-secondary)] rounded-2xl border border-[var(--border-color)]">
                                 <span class="text-[var(--text-secondary)]">Number of People</span>
                                 <div class="flex items-center gap-4">
-                                    <button onclick="updateGuests(-1)" class="w-8 h-8 rounded-full border border-[var(--border-color)] flex items-center justify-center text-[var(--text-primary)]">-</button>
+                                    <button onclick="updateGuests(-1)" class="w-8 h-8 rounded-full border border-[var(--border-color)] flex items-center justify-center text-[var(--text-primary)] active:bg-white/10">-</button>
                                     <span class="text-[var(--text-primary)] font-bold w-4 text-center">${state.booking.guests}</span>
-                                    <button onclick="updateGuests(1)" class="w-8 h-8 rounded-full border border-[var(--border-color)] flex items-center justify-center text-[var(--text-primary)]">+</button>
+                                    <button onclick="updateGuests(1)" class="w-8 h-8 rounded-full border border-[var(--border-color)] flex items-center justify-center text-[var(--text-primary)] active:bg-white/10">+</button>
                                 </div>
                              </div>
+                             <p class="text-[10px] text-[var(--text-secondary)] text-right px-1">
+                                ${pkg.title.includes('Group') ? '₹200 per additional person over 4' : 'Standard occupancy applied'}
+                             </p>
                         </div>
 
-                        <button onclick="nextBookingStep()" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider ${(!state.booking.date || !state.booking.time) ? 'opacity-50 pointer-events-none' : ''}">
+                        <button onclick="nextBookingStep()" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider active:scale-95 transition-transform ${(!state.booking.date || !state.booking.time) ? 'opacity-50 pointer-events-none' : ''}">
                             Proceed to Customization
                         </button>
                     </div>
                 `;
             } 
-            // Step 2: Addons & Confirm
             else {
                 const total = calculateTotal();
-                
                 const addonsHTML = ADDONS.map(addon => {
                     const isSelected = state.booking.addons.includes(addon.id);
                     return `
-                        <div onclick="toggleAddon('${addon.id}')" class="p-4 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${isSelected ? 'bg-[var(--bg-secondary)] border-gold/50' : 'bg-[var(--bg-secondary)] border-[var(--border-color)]'}">
+                        <div onclick="toggleAddon('${addon.id}')" class="p-4 rounded-2xl border flex items-center justify-between cursor-pointer transition-all active:scale-[0.98] ${isSelected ? 'bg-[var(--bg-secondary)] border-gold/50' : 'bg-[var(--bg-secondary)] border-[var(--border-color)]'}">
                             <div class="flex items-center gap-4">
                                 <div class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${isSelected ? 'bg-gold border-gold' : 'border-gray-500'}">
                                     ${isSelected ? '<i data-lucide="check" class="w-3 h-3 text-black"></i>' : ''}
@@ -637,20 +879,21 @@
                                 <span class="text-[var(--text-secondary)] text-sm">Estimated Total</span>
                                 <span class="text-2xl font-serif text-gold">₹${total}</span>
                             </div>
-                            <button onclick="confirmBooking()" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                            <button onclick="confirmBooking()" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-transform">
                                 <i data-lucide="message-circle" class="w-4 h-4 text-black"></i>
                                 Confirm Request
                             </button>
                         </div>
 
-                        <button onclick="setBookingStep(1)" class="w-full text-center text-[var(--text-secondary)] text-xs uppercase tracking-widest hover:text-[var(--text-primary)]">
+                        <button onclick="setBookingStep(1)" class="w-full text-center text-[var(--text-secondary)] text-xs uppercase tracking-widest hover:text-[var(--text-primary)] pb-8">
                             Modify Selection
                         </button>
                     </div>
                 `;
             }
         }
-
+        
+        // Use getReferralHTML from previous code but ensure it's defined
         function getReferralHTML() {
             return `
                  <div class="animate-fade-in pt-24 px-6 space-y-8">
@@ -664,16 +907,13 @@
                         <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gold to-yellow-800 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(203,165,121,0.2)]">
                             <i data-lucide="gem" class="w-8 h-8 text-black"></i>
                         </div>
-                        
                         <p class="text-[var(--text-secondary)] text-xs uppercase tracking-widest mb-3">Your Access Code</p>
                         <h3 class="text-4xl font-serif text-[var(--text-primary)] mb-8 tracking-widest">ROYAL-882</h3>
-                        
-                        <button onclick="alert('Invitation Link Copied!')" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                        <button onclick="alert('Invitation Link Copied!')" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 active:scale-95 transition-transform">
                             <i data-lucide="share-2" class="w-4 h-4 text-black"></i>
                             Share Invitation
                         </button>
                     </div>
-
                     <div class="grid grid-cols-2 gap-4">
                        <div class="glass-panel p-6 rounded-3xl text-center">
                           <div class="text-2xl font-serif text-[var(--text-primary)]">₹500</div>
@@ -688,73 +928,8 @@
             `;
         }
 
-        function getVIPHTML() {
-            return `
-                <div class="animate-fade-in">
-                    <div class="relative h-[360px] w-full overflow-hidden rounded-b-[48px]">
-                        <img src="https://images.unsplash.com/photo-1551516594-56cb78394645?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover">
-                        <div class="absolute inset-0 bg-[var(--bg-primary)]/60 z-10"></div>
-                        
-                        <div class="absolute bottom-0 w-full p-8 z-20 flex flex-col items-center">
-                            <div class="w-24 h-24 rounded-full p-[2px] bg-gradient-to-b from-gold to-transparent mb-4">
-                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" class="w-full h-full rounded-full border-4 border-[var(--bg-primary)] object-cover">
-                            </div>
-                            <h2 class="text-2xl font-serif text-white">Alex Morgan</h2>
-                            <span class="text-gold text-[10px] font-bold tracking-[0.2em] uppercase mt-2">Platinum Member</span>
-                        </div>
-                    </div>
-
-                    <div class="px-6 mt-8 space-y-6">
-                        <div class="grid grid-cols-2 gap-4">
-                           <div class="glass-panel p-6 rounded-3xl text-center">
-                              <div class="text-2xl font-serif text-[var(--text-primary)]">2.4k</div>
-                              <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">Credits</div>
-                           </div>
-                           <div class="glass-panel p-6 rounded-3xl text-center">
-                              <div class="text-2xl font-serif text-[var(--text-primary)]">03</div>
-                              <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">Visits</div>
-                           </div>
-                        </div>
-
-                        <div class="glass-panel p-6 rounded-3xl space-y-6">
-                            <h3 class="text-[var(--text-primary)] font-serif">Member Privileges</h3>
-                            <div class="space-y-4">
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[var(--text-primary)] text-sm">Priority Booking</span>
-                                    <i data-lucide="check" class="w-4 h-4 text-gold"></i>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[var(--text-primary)] text-sm">Valet Parking</span>
-                                    <i data-lucide="check" class="w-4 h-4 text-gold"></i>
-                                </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[var(--text-secondary)] text-sm">Complimentary Cake</span>
-                                    <div class="w-4 h-4 rounded-full border border-[var(--text-secondary)]"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        }
-
-        // --- ACTIONS ---
-
-        function selectPackageAndBook(pkgId) {
-            const pkg = PACKAGES.find(p => p.id === pkgId);
-            navigateTo('booking', pkg);
-        }
-
-        function setBookingDate(date) {
-            state.booking.date = date;
-            renderContent('booking');
-        }
-
-        function setBookingTime(time) {
-            state.booking.time = time;
-            renderContent('booking');
-        }
-
+        function setBookingDate(date) { state.booking.date = date; renderContent('booking'); }
+        function setBookingTime(time) { state.booking.time = time; renderContent('booking'); }
         function updateGuests(delta) {
             const newVal = state.booking.guests + delta;
             if(newVal >= 2 && newVal <= 10) {
@@ -762,64 +937,39 @@
                 renderContent('booking');
             }
         }
-
         function nextBookingStep() {
-            if(state.booking.date && state.booking.time) {
-                state.booking.step = 2;
-                renderContent('booking');
-            }
+            if(state.booking.date && state.booking.time) { state.booking.step = 2; renderContent('booking'); }
         }
-
-        function setBookingStep(step) {
-            state.booking.step = step;
-            renderContent('booking');
-        }
-
+        function setBookingStep(step) { state.booking.step = step; renderContent('booking'); }
         function toggleAddon(id) {
-            if(state.booking.addons.includes(id)) {
-                state.booking.addons = state.booking.addons.filter(a => a !== id);
-            } else {
-                state.booking.addons.push(id);
-            }
+            if(state.booking.addons.includes(id)) { state.booking.addons = state.booking.addons.filter(a => a !== id); } 
+            else { state.booking.addons.push(id); }
             renderContent('booking');
         }
-
         function calculateTotal() {
             let base = parseInt(state.booking.package.price.replace(/[^\d]/g, ''));
+            let extraGuestCharge = 0;
+            if (state.booking.package.title.includes('Group') && state.booking.guests > 4) {
+                extraGuestCharge = (state.booking.guests - 4) * 200;
+            }
             let addonsTotal = state.booking.addons.reduce((acc, curr) => {
                 const addon = ADDONS.find(a => a.id === curr);
                 return acc + (addon ? addon.price : 0);
             }, 0);
-            return base + addonsTotal;
+            return base + extraGuestCharge + addonsTotal;
         }
-
         function confirmBooking() {
             const addonNames = state.booking.addons.map(id => ADDONS.find(a => a.id === id).name).join(', ');
             const total = calculateTotal();
-            
-            const message = `
-*LUXURY BOOKING REQUEST - THE LITTLE SCREENS*
-━━━━━━━━━━━━━━━━━━━━━━━━
-*Suite:* ${state.booking.package.title}
-*Date:* ${state.booking.date}
-*Time:* ${state.booking.time}
-*Guests:* ${state.booking.guests}
-━━━━━━━━━━━━━━━━━━━━━━━━
-*Add-ons:* ${addonNames || 'None'}
-*Estimated Value:* ₹${total}
-━━━━━━━━━━━━━━━━━━━━━━━━
-*Status:* Requesting Confirmation via App
-            `.trim();
-            
+            const message = `*LUXURY BOOKING REQUEST*\nExperience: ${state.booking.package.title}\nDate: ${state.booking.date}\nTime: ${state.booking.time}\nGuests: ${state.booking.guests}\nAdd-ons: ${addonNames || 'None'}\nValue: ₹${total}`;
             const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
             window.open(url, '_blank');
         }
-
-        // Helper to keep DOM listeners alive
-        function bindBookingListeners() {
-            // Re-run lucide in case of icons inside dynamic booking content
-            lucide.createIcons();
+        function selectPackageAndBook(pkgId) {
+            const pkg = PACKAGES.find(p => p.id === pkgId);
+            navigateTo('booking', pkg);
         }
+        function bindBookingListeners() { lucide.createIcons(); }
 
     </script>
 </body>
