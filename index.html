@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>The Little Screens - Pro Luxury Experience</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        gold: {
+                            DEFAULT: '#CBA579',
+                            light: '#F5E6D3',
+                            dark: '#8B7355',
+                            dim: 'rgba(203,165,121,0.1)'
+                        },
+                        obsidian: '#050505',
+                        charcoal: '#1A1A1A',
+                        marble: '#FAFAFA'
+                    },
+                    fontFamily: {
+                        serif: ['"Playfair Display"', 'serif'],
+                        sans: ['"Manrope"', 'sans-serif'],
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                        'slide-up': 'slideUp 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', filter: 'blur(10px)' },
+                            '100%': { opacity: '1', filter: 'blur(0)' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* CSS Variables for Theming */
+        :root {
+            --bg-primary: #050505;
+            --bg-secondary: #111111;
+            --bg-glass: rgba(18, 18, 18, 0.8);
+            --text-primary: #FFFFFF;
+            --text-secondary: #9CA3AF;
+            --border-color: rgba(255, 255, 255, 0.1);
+            --accent-glow: rgba(203, 165, 121, 0.2);
+            --card-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        [data-theme="light"] {
+            --bg-primary: #FAFAFA;
+            --bg-secondary: #FFFFFF;
+            --bg-glass: rgba(255, 255, 255, 0.8);
+            --text-primary: #1A1A1A;
+            --text-secondary: #6B7280;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --accent-glow: rgba(203, 165, 121, 0.15);
+            --card-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            transition: background-color 0.5s ease, color 0.5s ease;
+        }
+
+        .glass-panel {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(to right, #F5E6D3, #CBA579);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        [data-theme="light"] .gold-gradient-text {
+            background: linear-gradient(to right, #CBA579, #8B7355);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .pro-button-primary {
+            background: linear-gradient(90deg, #E5C39C, #F5E6D3, #CBA579);
+            color: #0A0A0A;
+        }
+        
+        .pro-button-secondary {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        [data-theme="light"] .pro-button-secondary {
+            color: #4B5563;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold selection:text-black overflow-x-hidden">
+
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-obsidian transition-opacity duration-700">
+        <i data-lucide="gem" class="text-gold w-12 h-12 mb-6 animate-pulse"></i>
+        <div class="text-[10px] font-bold uppercase tracking-[0.4em] text-gray-500 animate-pulse">Loading Experience</div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-md mx-auto min-h-screen relative shadow-2xl transition-colors duration-500 border-x border-[var(--border-color)]">
+        
+        <!-- Header / Theme Toggle -->
+        <div class="fixed top-0 left-0 right-0 max-w-md mx-auto z-40 p-6 flex justify-between items-start pointer-events-none">
+            <div class="pointer-events-auto">
+                <!-- Dynamic Back Button (Only visible on sub-pages) -->
+                <button id="header-back-btn" class="hidden w-10 h-10 rounded-full glass-panel flex items-center justify-center text-[var(--text-primary)] hover:scale-105 transition-transform" onclick="navigateTo('home')">
+                    <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <button id="theme-toggle" class="pointer-events-auto w-10 h-10 rounded-full glass-panel flex items-center justify-center text-[var(--text-primary)] hover:rotate-180 transition-transform duration-700">
+                <i data-lucide="sun" class="w-5 h-5 hidden" id="icon-sun"></i>
+                <i data-lucide="moon" class="w-5 h-5" id="icon-moon"></i>
+            </button>
+        </div>
+
+        <!-- Scrollable Content Area -->
+        <main id="app-content" class="pb-32 min-h-screen transition-all duration-500">
+            <!-- Content Injected via JS -->
+        </main>
+
+        <!-- Floating Action Button (WhatsApp) -->
+        <div id="fab-whatsapp" class="fixed bottom-32 right-6 z-40 transition-transform duration-300 hover:scale-110 active:scale-95 hidden">
+            <a href="https://wa.me/919916519128" target="_blank" class="block bg-[#25D366] text-white p-4 rounded-full shadow-lg shadow-green-500/30 border border-white/10 relative group">
+                <div class="absolute inset-0 bg-white rounded-full animate-ping opacity-20"></div>
+                <i data-lucide="message-circle" class="w-6 h-6 relative z-10 fill-white"></i>
+            </a>
+        </div>
+
+        <!-- Floating Navigation Dock -->
+        <div class="fixed bottom-8 left-0 right-0 z-50 flex justify-center pointer-events-none">
+            <nav class="pointer-events-auto glass-panel rounded-full px-6 py-4 flex items-center gap-8 shadow-2xl scale-90 sm:scale-100 transition-all">
+                <button class="nav-item group relative" onclick="navigateTo('home')" data-tab="home">
+                    <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
+                    <i data-lucide="home" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
+                    <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
+                </button>
+                
+                <button class="nav-item group relative" onclick="navigateTo('experiences')" data-tab="experiences">
+                    <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
+                    <i data-lucide="sparkles" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
+                    <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
+                </button>
+
+                <button class="nav-item group relative" onclick="navigateTo('booking')" data-tab="booking">
+                    <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
+                    <i data-lucide="calendar" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
+                    <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
+                </button>
+
+                <button class="nav-item group relative" onclick="navigateTo('referral')" data-tab="referral">
+                    <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
+                    <i data-lucide="gift" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
+                    <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
+                </button>
+
+                <button class="nav-item group relative" onclick="navigateTo('vip')" data-tab="vip">
+                    <div class="active-glow absolute inset-0 bg-gold blur-xl opacity-0 rounded-full transition-opacity duration-300"></div>
+                    <i data-lucide="user" class="w-5 h-5 text-gray-400 group-hover:text-gold transition-colors relative z-10"></i>
+                    <div class="active-dot absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-1 bg-gold rounded-full opacity-0 transition-opacity"></div>
+                </button>
+            </nav>
+        </div>
+
+    </div>
+
+    <!-- Application Logic -->
+    <script>
+        // --- DATA ---
+        const WA_NUMBER = "919916519128";
+        
+        const PACKAGES = [
+            {
+                id: 1,
+                title: "Cinematic Platinum",
+                price: "₹3,999",
+                duration: "3 Hours",
+                image: "https://images.unsplash.com/photo-1517604931442-71053e6e2306?q=80&w=1200&auto=format&fit=crop",
+                description: "The classic private theatre experience with popcorn and beverages.",
+                features: ["Private 150-inch Screen", "Dolby Atmos Sound", "Unlimited Popcorn", "2 Mocktails"]
+            },
+            {
+                id: 2,
+                title: "Sapphire Birthday",
+                price: "₹6,499",
+                duration: "4 Hours",
+                image: "https://images.unsplash.com/photo-1530103862676-de3c9a59af38?q=80&w=1200&auto=format&fit=crop",
+                description: "Complete birthday setup with balloon decor, cake, and fog entry.",
+                features: ["Grand Balloon Decor", "500g Premium Cake", "Fog Entry Effect", "Photography (30 mins)"]
+            },
+            {
+                id: 3,
+                title: "Diamond Proposal",
+                price: "₹9,999",
+                duration: "4 Hours",
+                image: "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?q=80&w=1200&auto=format&fit=crop",
+                description: "A breathtaking 'Will You Marry Me' setup with roses and candlelight.",
+                features: ["Rose Petal Pathway", "Marry Me Neon Sign", "Candlelight Dinner", "Hidden Photographer"]
+            },
+            {
+                id: 4,
+                title: "The Royal Suite",
+                price: "₹14,999",
+                duration: "5 Hours",
+                image: "https://images.unsplash.com/photo-1563720223185-11003d516935?q=80&w=1200&auto=format&fit=crop",
+                description: "The ultimate luxury. Chauffeur pickup, 7-course meal, and exclusive gifts.",
+                features: ["Luxury Car Pickup", "7-Course Gourmet Meal", "Personal Butler", "Exclusive Gift Hamper"]
+            }
+        ];
+
+        const ADDONS = [
+            { id: 'cake', name: 'Truffle Cake (500g)', price: 800 },
+            { id: 'fog', name: 'Fog Entry Effect', price: 500 },
+            { id: 'dec', name: 'Floral Decoration', price: 1200 },
+            { id: 'photo', name: 'Pro Photographer', price: 1500 },
+        ];
+
+        // --- STATE ---
+        let state = {
+            currentTab: 'home',
+            theme: 'dark', // 'dark' or 'light'
+            booking: {
+                package: null,
+                step: 1,
+                date: '',
+                time: '',
+                guests: 2,
+                addons: []
+            }
+        };
+
+        // --- INIT ---
+        window.addEventListener('DOMContentLoaded', () => {
+            // Theme Init
+            const savedTheme = localStorage.getItem('theme') || 'dark';
+            setTheme(savedTheme);
+
+            // Fake Loading
+            setTimeout(() => {
+                document.getElementById('loading-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('loading-screen').style.display = 'none';
+                    navigateTo('home');
+                }, 700);
+            }, 2000);
+
+            // Event Listeners
+            document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        });
+
+        // --- THEME LOGIC ---
+        function toggleTheme() {
+            const newTheme = state.theme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        }
+
+        function setTheme(mode) {
+            state.theme = mode;
+            document.documentElement.setAttribute('data-theme', mode);
+            localStorage.setItem('theme', mode);
+
+            const sunIcon = document.getElementById('icon-sun');
+            const moonIcon = document.getElementById('icon-moon');
+            const loadingScreen = document.getElementById('loading-screen');
+
+            if (mode === 'light') {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+                loadingScreen.style.backgroundColor = '#FAFAFA'; // Marble
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+                loadingScreen.style.backgroundColor = '#050505'; // Obsidian
+            }
+        }
+
+        // --- NAVIGATION ---
+        function navigateTo(screenId, pkg = null) {
+            state.currentTab = screenId;
+            
+            // Handle Package Selection
+            if (pkg) {
+                state.booking.package = pkg;
+                state.booking.step = 1;
+                state.booking.date = '';
+                state.booking.time = '';
+                state.booking.guests = 2;
+                state.booking.addons = [];
+            } else if (screenId === 'booking' && !state.booking.package) {
+                // Default to first package if navigating directly without selection
+                state.booking.package = PACKAGES[0];
+            }
+
+            // Update UI
+            updateDock();
+            renderContent(screenId);
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+
+            // Update Header Back Button
+            const backBtn = document.getElementById('header-back-btn');
+            if (screenId === 'home') {
+                backBtn.classList.add('hidden');
+            } else {
+                backBtn.classList.remove('hidden');
+            }
+
+            // Update FAB Visibility
+            const fab = document.getElementById('fab-whatsapp');
+            if (screenId === 'booking') {
+                fab.classList.add('hidden');
+            } else {
+                fab.classList.remove('hidden');
+            }
+
+            // Re-init Icons
+            lucide.createIcons();
+        }
+
+        function updateDock() {
+            document.querySelectorAll('.nav-item').forEach(el => {
+                const isTarget = el.dataset.tab === state.currentTab;
+                // Lucide replaces <i> with <svg> after first render. We try to find either.
+                const icon = el.querySelector('i') || el.querySelector('svg');
+                const glow = el.querySelector('.active-glow');
+                const dot = el.querySelector('.active-dot');
+
+                if (icon) {
+                    if (isTarget) {
+                        icon.classList.add('text-gold', '-translate-y-2', 'scale-110');
+                        icon.classList.remove('text-gray-400');
+                        if(glow) glow.classList.remove('opacity-0');
+                        if(dot) dot.classList.remove('opacity-0');
+                    } else {
+                        icon.classList.remove('text-gold', '-translate-y-2', 'scale-110');
+                        icon.classList.add('text-gray-400');
+                        if(glow) glow.classList.add('opacity-0');
+                        if(dot) dot.classList.add('opacity-0');
+                    }
+                }
+            });
+        }
+
+        // --- RENDERERS ---
+
+        function renderContent(screenId) {
+            const container = document.getElementById('app-content');
+            let html = '';
+
+            switch(screenId) {
+                case 'home': html = getHomeHTML(); break;
+                case 'experiences': html = getExperiencesHTML(); break;
+                case 'booking': html = getBookingHTML(); break;
+                case 'referral': html = getReferralHTML(); break;
+                case 'vip': html = getVIPHTML(); break;
+            }
+
+            // Smooth transition
+            container.style.opacity = '0';
+            setTimeout(() => {
+                container.innerHTML = html;
+                container.style.opacity = '1';
+                lucide.createIcons();
+                
+                // Re-bind listeners after rendering HTML
+                if (screenId === 'booking') bindBookingListeners();
+            }, 200);
+        }
+
+        // --- HTML GENERATORS ---
+
+        function getHomeHTML() {
+            return `
+                <div class="animate-slide-up space-y-10">
+                    <!-- Hero -->
+                    <div class="relative h-[460px] w-full rounded-b-[48px] overflow-hidden">
+                        <img src="https://images.unsplash.com/photo-1513106580091-1d82408b8cd8?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-1000 hover:scale-105">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-primary)] via-[var(--bg-primary)]/60 to-transparent"></div>
+                        <div class="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] mix-blend-overlay"></div>
+                        
+                        <div class="absolute bottom-0 left-0 w-full p-8 space-y-6">
+                            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full glass-panel border-[var(--border-color)]">
+                                <i data-lucide="gem" class="w-3 h-3 text-gold"></i>
+                                <span class="text-gold text-[10px] font-bold tracking-[0.2em] uppercase">The Little Screens Pro</span>
+                            </div>
+                            
+                            <h1 class="text-5xl font-serif leading-[1.1] text-[var(--text-primary)]">
+                                Experience <br /> 
+                                <span class="gold-gradient-text">Cinema</span>
+                            </h1>
+                            
+                            <div class="flex gap-4 pt-2">
+                                <button onclick="navigateTo('experiences')" class="pro-button-primary px-8 py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center gap-2 transform transition hover:-translate-y-1">
+                                    Reserve Suite
+                                </button>
+                                <button onclick="navigateTo('vip')" class="w-12 h-12 rounded-xl glass-panel flex items-center justify-center text-[var(--text-primary)] hover:bg-white/10 transition-colors">
+                                    <i data-lucide="user" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="px-6 flex gap-4">
+                        <div onclick="navigateTo('booking')" class="flex-1 glass-panel p-6 flex flex-col items-center gap-3 cursor-pointer group rounded-3xl transition hover:border-gold/30">
+                            <div class="p-3 rounded-full bg-gradient-to-br from-[var(--bg-secondary)] to-black border border-[var(--border-color)] group-hover:border-gold/50 transition">
+                                <i data-lucide="calendar" class="w-5 h-5 text-gold"></i>
+                            </div>
+                            <span class="text-[var(--text-secondary)] text-xs font-bold uppercase tracking-wider group-hover:text-[var(--text-primary)]">Book Now</span>
+                        </div>
+                        <div onclick="navigateTo('referral')" class="flex-1 glass-panel p-6 flex flex-col items-center gap-3 cursor-pointer group rounded-3xl transition hover:border-gold/30">
+                            <div class="p-3 rounded-full bg-gradient-to-br from-[var(--bg-secondary)] to-black border border-[var(--border-color)] group-hover:border-gold/50 transition">
+                                <i data-lucide="gift" class="w-5 h-5 text-gold"></i>
+                            </div>
+                            <span class="text-[var(--text-secondary)] text-xs font-bold uppercase tracking-wider group-hover:text-[var(--text-primary)]">Gifts</span>
+                        </div>
+                    </div>
+
+                    <!-- Carousel -->
+                    <div class="pb-8">
+                        <div class="flex justify-between items-end px-6 mb-6">
+                            <h2 class="text-2xl font-serif text-[var(--text-primary)]">Signature Suites</h2>
+                            <button onclick="navigateTo('experiences')" class="text-gold text-xs font-bold tracking-widest uppercase">View All</button>
+                        </div>
+                        
+                        <div class="flex overflow-x-auto gap-6 px-6 pb-4 snap-x hide-scrollbar">
+                            ${PACKAGES.map(pkg => `
+                                <div class="min-w-[300px] snap-center">
+                                    <div class="relative h-[380px] rounded-[32px] overflow-hidden group cursor-pointer border border-[var(--border-color)]" onclick="selectPackageAndBook(${pkg.id})">
+                                        <img src="${pkg.image}" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                                        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-[var(--bg-primary)]"></div>
+                                        
+                                        <div class="absolute top-4 right-4 glass-panel px-4 py-2 rounded-full">
+                                            <span class="text-gold text-xs font-bold tracking-wide">${pkg.price}</span>
+                                        </div>
+
+                                        <div class="absolute bottom-0 w-full p-8">
+                                            <h3 class="text-2xl font-serif text-[var(--text-primary)] mb-2 group-hover:text-gold transition-colors">${pkg.title}</h3>
+                                            <div class="flex items-center gap-3 mb-4">
+                                                <span class="text-[var(--text-secondary)] text-xs uppercase tracking-wider">${pkg.duration}</span>
+                                                <span class="w-1 h-1 rounded-full bg-gold"></span>
+                                                <span class="text-[var(--text-secondary)] text-xs uppercase tracking-wider">4 Guests Max</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getExperiencesHTML() {
+            return `
+                <div class="animate-fade-in pt-24 px-6 space-y-8">
+                    <div class="space-y-2">
+                        <h2 class="text-3xl font-serif text-[var(--text-primary)]">The Collection</h2>
+                        <p class="text-[var(--text-secondary)] text-sm">Curated experiences for your special moments.</p>
+                    </div>
+
+                    <div class="space-y-6">
+                        ${PACKAGES.map(pkg => `
+                            <div class="group relative bg-[var(--bg-secondary)] rounded-[32px] overflow-hidden border border-[var(--border-color)]">
+                                <div class="h-56 relative overflow-hidden">
+                                    <img src="${pkg.image}" class="w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-100">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-[var(--bg-secondary)] to-transparent"></div>
+                                    <div class="absolute top-4 right-4 glass-panel px-3 py-1 rounded-full">
+                                        <span class="text-gold font-bold text-xs">${pkg.price}</span>
+                                    </div>
+                                </div>
+                                <div class="p-8 -mt-12 relative z-10">
+                                    <h3 class="text-2xl font-serif text-[var(--text-primary)] mb-2">${pkg.title}</h3>
+                                    <p class="text-[var(--text-secondary)] text-sm mb-6 leading-relaxed">${pkg.description}</p>
+                                    <button onclick="selectPackageAndBook(${pkg.id})" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider">
+                                        Reserve Suite
+                                    </button>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function getBookingHTML() {
+            const pkg = state.booking.package;
+            if(!pkg) return '';
+
+            // Step 1: Date/Time
+            if (state.booking.step === 1) {
+                // Generate next 7 days
+                const daysHTML = Array.from({length: 7}, (_, i) => {
+                    const d = new Date();
+                    d.setDate(d.getDate() + i);
+                    const dayName = d.toLocaleDateString('en-US', { weekday: 'short' });
+                    const dayNum = d.getDate();
+                    const fullDate = `${dayNum} ${dayName}`;
+                    const isSelected = state.booking.date === fullDate;
+                    
+                    return `
+                        <button onclick="setBookingDate('${fullDate}')" 
+                            class="min-w-[72px] h-[96px] rounded-[20px] flex flex-col items-center justify-center gap-1 border transition-all ${isSelected ? 'bg-gold border-gold text-black shadow-lg scale-105' : 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-secondary)]'}">
+                            <span class="text-[10px] font-bold uppercase tracking-wider opacity-60">${dayName}</span>
+                            <span class="text-2xl font-serif font-medium">${dayNum}</span>
+                        </button>
+                    `;
+                }).join('');
+
+                const times = ['11:00 AM', '02:30 PM', '06:00 PM', '09:30 PM'];
+                const timesHTML = times.map(t => {
+                    const isSelected = state.booking.time === t;
+                    return `
+                        <button onclick="setBookingTime('${t}')" 
+                            class="py-4 rounded-xl text-xs font-bold tracking-wider border transition-all ${isSelected ? 'bg-[var(--bg-secondary)] border-gold text-gold' : 'bg-[var(--bg-secondary)] border-[var(--border-color)] text-[var(--text-secondary)]'}">
+                            ${t}
+                        </button>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="animate-fade-in pt-24 px-6 space-y-8">
+                        <div class="space-y-4">
+                            <h3 class="text-[var(--text-primary)] font-serif text-xl">Confirm Suite</h3>
+                            <div class="p-4 rounded-2xl bg-[var(--bg-secondary)] border border-gold/50 shadow-[0_0_20px_var(--accent-glow)] flex gap-4 items-center">
+                                <img src="${pkg.image}" class="w-16 h-16 rounded-xl object-cover">
+                                <div>
+                                    <h4 class="text-[var(--text-primary)] font-serif">${pkg.title}</h4>
+                                    <p class="text-gold text-xs font-bold mt-1">${pkg.price}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                            <h3 class="text-[var(--text-primary)] font-serif text-xl">Select Date</h3>
+                            <div class="flex gap-3 overflow-x-auto pb-4 hide-scrollbar">
+                                ${daysHTML}
+                            </div>
+                        </div>
+
+                        <div class="space-y-4">
+                             <h3 class="text-[var(--text-primary)] font-serif text-xl">Select Slot</h3>
+                             <div class="grid grid-cols-2 gap-3">
+                                ${timesHTML}
+                             </div>
+                        </div>
+
+                         <div class="space-y-4">
+                             <h3 class="text-[var(--text-primary)] font-serif text-xl">Guests</h3>
+                             <div class="flex justify-between items-center p-4 bg-[var(--bg-secondary)] rounded-2xl border border-[var(--border-color)]">
+                                <span class="text-[var(--text-secondary)]">Number of People</span>
+                                <div class="flex items-center gap-4">
+                                    <button onclick="updateGuests(-1)" class="w-8 h-8 rounded-full border border-[var(--border-color)] flex items-center justify-center text-[var(--text-primary)]">-</button>
+                                    <span class="text-[var(--text-primary)] font-bold w-4 text-center">${state.booking.guests}</span>
+                                    <button onclick="updateGuests(1)" class="w-8 h-8 rounded-full border border-[var(--border-color)] flex items-center justify-center text-[var(--text-primary)]">+</button>
+                                </div>
+                             </div>
+                        </div>
+
+                        <button onclick="nextBookingStep()" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider ${(!state.booking.date || !state.booking.time) ? 'opacity-50 pointer-events-none' : ''}">
+                            Proceed to Customization
+                        </button>
+                    </div>
+                `;
+            } 
+            // Step 2: Addons & Confirm
+            else {
+                const total = calculateTotal();
+                
+                const addonsHTML = ADDONS.map(addon => {
+                    const isSelected = state.booking.addons.includes(addon.id);
+                    return `
+                        <div onclick="toggleAddon('${addon.id}')" class="p-4 rounded-2xl border flex items-center justify-between cursor-pointer transition-all ${isSelected ? 'bg-[var(--bg-secondary)] border-gold/50' : 'bg-[var(--bg-secondary)] border-[var(--border-color)]'}">
+                            <div class="flex items-center gap-4">
+                                <div class="w-5 h-5 rounded-md border flex items-center justify-center transition-colors ${isSelected ? 'bg-gold border-gold' : 'border-gray-500'}">
+                                    ${isSelected ? '<i data-lucide="check" class="w-3 h-3 text-black"></i>' : ''}
+                                </div>
+                                <span class="text-[var(--text-primary)] text-sm font-medium">${addon.name}</span>
+                            </div>
+                            <span class="text-gold text-xs font-bold">₹${addon.price}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <div class="animate-slide-up pt-24 px-6 space-y-8">
+                         <div class="space-y-4">
+                            <h3 class="text-[var(--text-primary)] font-serif text-xl">Curated Additions</h3>
+                            <div class="grid gap-3">
+                                ${addonsHTML}
+                            </div>
+                        </div>
+
+                        <div class="p-6 rounded-3xl bg-[var(--bg-secondary)] border border-[var(--border-color)] space-y-4">
+                            <div class="flex justify-between items-center pb-4 border-b border-[var(--border-color)]">
+                                <span class="text-[var(--text-secondary)] text-sm">Estimated Total</span>
+                                <span class="text-2xl font-serif text-gold">₹${total}</span>
+                            </div>
+                            <button onclick="confirmBooking()" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                                <i data-lucide="message-circle" class="w-4 h-4 text-black"></i>
+                                Confirm Request
+                            </button>
+                        </div>
+
+                        <button onclick="setBookingStep(1)" class="w-full text-center text-[var(--text-secondary)] text-xs uppercase tracking-widest hover:text-[var(--text-primary)]">
+                            Modify Selection
+                        </button>
+                    </div>
+                `;
+            }
+        }
+
+        function getReferralHTML() {
+            return `
+                 <div class="animate-fade-in pt-24 px-6 space-y-8">
+                    <div class="text-center space-y-2">
+                        <span class="px-3 py-1 rounded-full border border-gold/30 text-gold text-[10px] uppercase tracking-[0.2em]">The Circle</span>
+                        <h2 class="text-3xl font-serif text-[var(--text-primary)] pt-4">Elite Invitations</h2>
+                    </div>
+
+                    <div class="relative overflow-hidden rounded-[32px] bg-gradient-to-b from-[var(--bg-secondary)] to-[var(--bg-primary)] border border-[var(--border-color)] p-8 text-center group">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-gold to-transparent opacity-30"></div>
+                        <div class="w-24 h-24 mx-auto bg-gradient-to-br from-gold to-yellow-800 rounded-full flex items-center justify-center mb-6 shadow-[0_0_40px_rgba(203,165,121,0.2)]">
+                            <i data-lucide="gem" class="w-8 h-8 text-black"></i>
+                        </div>
+                        
+                        <p class="text-[var(--text-secondary)] text-xs uppercase tracking-widest mb-3">Your Access Code</p>
+                        <h3 class="text-4xl font-serif text-[var(--text-primary)] mb-8 tracking-widest">ROYAL-882</h3>
+                        
+                        <button onclick="alert('Invitation Link Copied!')" class="pro-button-primary w-full py-4 rounded-xl font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2">
+                            <i data-lucide="share-2" class="w-4 h-4 text-black"></i>
+                            Share Invitation
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                       <div class="glass-panel p-6 rounded-3xl text-center">
+                          <div class="text-2xl font-serif text-[var(--text-primary)]">₹500</div>
+                          <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">You Get</div>
+                       </div>
+                       <div class="glass-panel p-6 rounded-3xl text-center">
+                          <div class="text-2xl font-serif text-[var(--text-primary)]">10%</div>
+                          <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">They Get</div>
+                       </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getVIPHTML() {
+            return `
+                <div class="animate-fade-in">
+                    <div class="relative h-[360px] w-full overflow-hidden rounded-b-[48px]">
+                        <img src="https://images.unsplash.com/photo-1551516594-56cb78394645?q=80&w=1200&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-[var(--bg-primary)]/60 z-10"></div>
+                        
+                        <div class="absolute bottom-0 w-full p-8 z-20 flex flex-col items-center">
+                            <div class="w-24 h-24 rounded-full p-[2px] bg-gradient-to-b from-gold to-transparent mb-4">
+                                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&auto=format&fit=crop" class="w-full h-full rounded-full border-4 border-[var(--bg-primary)] object-cover">
+                            </div>
+                            <h2 class="text-2xl font-serif text-white">Alex Morgan</h2>
+                            <span class="text-gold text-[10px] font-bold tracking-[0.2em] uppercase mt-2">Platinum Member</span>
+                        </div>
+                    </div>
+
+                    <div class="px-6 mt-8 space-y-6">
+                        <div class="grid grid-cols-2 gap-4">
+                           <div class="glass-panel p-6 rounded-3xl text-center">
+                              <div class="text-2xl font-serif text-[var(--text-primary)]">2.4k</div>
+                              <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">Credits</div>
+                           </div>
+                           <div class="glass-panel p-6 rounded-3xl text-center">
+                              <div class="text-2xl font-serif text-[var(--text-primary)]">03</div>
+                              <div class="text-[10px] text-[var(--text-secondary)] uppercase tracking-wider mt-1">Visits</div>
+                           </div>
+                        </div>
+
+                        <div class="glass-panel p-6 rounded-3xl space-y-6">
+                            <h3 class="text-[var(--text-primary)] font-serif">Member Privileges</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[var(--text-primary)] text-sm">Priority Booking</span>
+                                    <i data-lucide="check" class="w-4 h-4 text-gold"></i>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[var(--text-primary)] text-sm">Valet Parking</span>
+                                    <i data-lucide="check" class="w-4 h-4 text-gold"></i>
+                                </div>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-[var(--text-secondary)] text-sm">Complimentary Cake</span>
+                                    <div class="w-4 h-4 rounded-full border border-[var(--text-secondary)]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- ACTIONS ---
+
+        function selectPackageAndBook(pkgId) {
+            const pkg = PACKAGES.find(p => p.id === pkgId);
+            navigateTo('booking', pkg);
+        }
+
+        function setBookingDate(date) {
+            state.booking.date = date;
+            renderContent('booking');
+        }
+
+        function setBookingTime(time) {
+            state.booking.time = time;
+            renderContent('booking');
+        }
+
+        function updateGuests(delta) {
+            const newVal = state.booking.guests + delta;
+            if(newVal >= 2 && newVal <= 10) {
+                state.booking.guests = newVal;
+                renderContent('booking');
+            }
+        }
+
+        function nextBookingStep() {
+            if(state.booking.date && state.booking.time) {
+                state.booking.step = 2;
+                renderContent('booking');
+            }
+        }
+
+        function setBookingStep(step) {
+            state.booking.step = step;
+            renderContent('booking');
+        }
+
+        function toggleAddon(id) {
+            if(state.booking.addons.includes(id)) {
+                state.booking.addons = state.booking.addons.filter(a => a !== id);
+            } else {
+                state.booking.addons.push(id);
+            }
+            renderContent('booking');
+        }
+
+        function calculateTotal() {
+            let base = parseInt(state.booking.package.price.replace(/[^\d]/g, ''));
+            let addonsTotal = state.booking.addons.reduce((acc, curr) => {
+                const addon = ADDONS.find(a => a.id === curr);
+                return acc + (addon ? addon.price : 0);
+            }, 0);
+            return base + addonsTotal;
+        }
+
+        function confirmBooking() {
+            const addonNames = state.booking.addons.map(id => ADDONS.find(a => a.id === id).name).join(', ');
+            const total = calculateTotal();
+            
+            const message = `
+*LUXURY BOOKING REQUEST - THE LITTLE SCREENS*
+━━━━━━━━━━━━━━━━━━━━━━━━
+*Suite:* ${state.booking.package.title}
+*Date:* ${state.booking.date}
+*Time:* ${state.booking.time}
+*Guests:* ${state.booking.guests}
+━━━━━━━━━━━━━━━━━━━━━━━━
+*Add-ons:* ${addonNames || 'None'}
+*Estimated Value:* ₹${total}
+━━━━━━━━━━━━━━━━━━━━━━━━
+*Status:* Requesting Confirmation via App
+            `.trim();
+            
+            const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
+
+        // Helper to keep DOM listeners alive
+        function bindBookingListeners() {
+            // Re-run lucide in case of icons inside dynamic booking content
+            lucide.createIcons();
+        }
+
+    </script>
+</body>
+</html>
